@@ -13,28 +13,23 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	DataSource dataSource;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication()
-		.dataSource(dataSource) //auto configure h2 database
-		.withDefaultSchema() //Our H2 database will have couple of tables
-		.withUser(User.withUsername("Vikas")
-				.password("Srinivas")
-				.roles("User"))
-		.withUser(User.withUsername("Srinivas")
-						.password("Vikas")
-						.roles("User")
-				);
+			auth.jdbcAuthentication()
+			.dataSource(dataSource); //auto configure h2 database
+			
 	}
+	
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -45,4 +40,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.and()
 		.formLogin();
 	}
+	
 }
